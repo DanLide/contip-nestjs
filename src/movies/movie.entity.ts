@@ -1,9 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import Category from '../categories/category.entity';
 
 @Entity()
 class Movie {
   @PrimaryGeneratedColumn()
-  public id?: number;
+  public id: number;
 
   @Column()
   public title: string;
@@ -13,6 +14,13 @@ class Movie {
 
   @Column()
   public tmdb: number;
+
+  @ManyToMany(() => Category, (category: Category) => category.movies, {
+    eager: true,
+    cascade: true,
+  })
+  @JoinTable()
+  public categories: Category[];
 }
 
 export default Movie;
