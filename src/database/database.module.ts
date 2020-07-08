@@ -15,11 +15,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
         entities: [
-          __dirname + '/../**/*.entity.ts',
+          __dirname + '/../**/*.entity{.ts,.js}',
         ],
         synchronize: true,
-      }),
+      })
     }),
   ],
 })
+
 export class DatabaseModule {}
