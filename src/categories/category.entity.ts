@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import Movie from '../movies/movie.entity';
 
 @Entity()
@@ -6,7 +6,7 @@ class Category {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column()
+  @Column({ unique: true })
   public name: string;
 
   @ManyToMany(() => Movie, (movie: Movie) => movie.categories)

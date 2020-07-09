@@ -13,13 +13,13 @@ export class MoviesService {
   ) {}
 
   getAllMovies() {
-    return this.moviesRepository.find();
+    return this.moviesRepository.find({ relations: ['categories'] });
   }
 
   async getMovieById(id: number) {
-    const post = await this.moviesRepository.findOne(id);
-    if (post) {
-      return post;
+    const movie = await this.moviesRepository.findOne(id, { relations: ['categories'] });
+    if (movie) {
+      return movie;
     }
     throw new HttpException('Movie not found', HttpStatus.NOT_FOUND);
   }
@@ -31,17 +31,18 @@ export class MoviesService {
   }
 
   async updateMovie(id: number, movie: UpdateMovieDto) {
-    await this.moviesRepository.update(id, movie);
-    const updatedMovie = await this.moviesRepository.findOne(id);
-    if (updatedMovie) {
-      return updatedMovie;
+    const movieFromDb = await this.moviesRepository.findOne(id);
+    if (movieFromDb) {
+      this.moviesRepository.merge(movieFromDb, movie);
+      await this.moviesRepository.save(movieFromDb);
+      return movieFromDb;
     }
     throw new HttpException('Movie not found', HttpStatus.NOT_FOUND);
   }
 
   async deleteMovie(id: number) {
-    const deletedMovie = await this.moviesRepository.delete(id);
-    if (!deletedMovie.affected) {
+    const deleteResponse = await this.moviesRepository.delete(id);
+    if (!deleteResponse.affected) {
       throw new HttpException('Movie not found', HttpStatus.NOT_FOUND);
     }
   }

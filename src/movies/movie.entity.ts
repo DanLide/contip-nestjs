@@ -16,8 +16,8 @@ class Movie {
   public tmdb: number;
 
   @ManyToMany(() => Category, (category: Category) => category.movies, {
-    eager: true,
     cascade: true,
+    onUpdate: 'CASCADE',
   })
   @JoinTable()
   public categories: Category[];
