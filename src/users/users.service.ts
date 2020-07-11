@@ -1,14 +1,18 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import User from './user.entity';
 import { Repository } from 'typeorm';
 import CreateUserDto from './dto/createUser.dto';
+import { ProfileService } from '../profile/profile.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    // Use forwardRef() for avoiding circular dependency
+    @Inject(forwardRef(() => ProfileService))
+    private readonly profileService: ProfileService,
   ) {}
 
   async getByEmail(email: string) {
@@ -20,7 +24,10 @@ export class UsersService {
   }
 
   async getById(id: number) {
-    const user = await this.usersRepository.findOne({ id });
+    const user = await this.usersRepository.findOne(
+      { id },
+      { relations: ['profile'] },
+    );
     if (user) {
       return user;
     }
@@ -29,6 +36,8 @@ export class UsersService {
 
   async create(userData: CreateUserDto) {
     const newUser = await this.usersRepository.create(userData);
+    // Create profile together with user
+    newUser.profile = await this.profileService.createProfile({});
     await this.usersRepository.save(newUser);
     return newUser;
   }
