@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/c
 import { AuthenticationService } from './authentication.service';
 import RegisterDto from './dto/register.dto';
 import { LocalAuthenticationGuard } from './guards/localAuthentication.guard';
-import RequestWithUser from './interfaces/requestWithUser.interface';
+import RequestWithUser from '../utils/requestWithUser.interface';
 import JwtAuthenticationGuard from './guards/jwt-authentication.guard';
 
 @Controller('authentication')
