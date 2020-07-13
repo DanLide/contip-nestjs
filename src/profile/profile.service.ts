@@ -11,16 +11,11 @@ export class ProfileService {
   constructor(
     @InjectRepository(Profile)
     private profilesRepository: Repository<Profile>,
-    // Use forwardRef() for avoiding circular dependency
-    @Inject(forwardRef(() => UsersService))
-    private readonly usersService: UsersService,
   ) {}
 
   async getProfileByUserId(userId: number) {
-    const user = await this.usersService.getById(userId);
-    if (user.profile) {
-      return user.profile;
-    }
+    const profile = await this.profilesRepository.findOne({ user: { id: userId } });
+    if (profile) { return profile }
     throw new HttpException('Profile not found', HttpStatus.NOT_FOUND);
   }
 

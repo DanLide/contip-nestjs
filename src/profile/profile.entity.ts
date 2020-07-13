@@ -1,4 +1,4 @@
-import { Entity, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import { Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import User from '../users/user.entity';
 import Category from '../categories/category.entity';
 import Movie from '../movies/movie.entity';
@@ -6,12 +6,14 @@ import Movie from '../movies/movie.entity';
 @Entity()
 class Profile {
   @PrimaryGeneratedColumn()
-  id: number;
+  public id: number;
 
-  @OneToOne(() => User, (user: User) => user.profile, {
+  @OneToOne(() => User, {
+    cascade: ['insert'],
     onDelete: 'CASCADE',
   })
-  user: User;
+  @JoinColumn()
+  public user: User;
 
   @ManyToMany(() => Category, {
     cascade: true,
@@ -19,7 +21,7 @@ class Profile {
     onUpdate: 'CASCADE',
   })
   @JoinTable()
-  preferences: Category[];
+  public preferences: Category[];
 
   @ManyToMany(() => Movie, {
     cascade: true,
@@ -27,7 +29,7 @@ class Profile {
     onUpdate: 'CASCADE',
   })
   @JoinTable()
-  watchlist: Movie[];
+  public watchlist: Movie[];
 }
 
 export default Profile;

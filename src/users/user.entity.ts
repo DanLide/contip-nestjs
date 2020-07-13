@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import Profile from '../profile/profile.entity';
+import Rating from '../ratings/rating.entity';
 
 @Entity()
 class User {
@@ -14,12 +15,6 @@ class User {
 
   @Column()
   public password: string;
-
-  @OneToOne(() => Profile, (profile: Profile) => profile.user, {
-    cascade: true,
-  })
-  @JoinColumn()
-  profile: Profile;
 }
 
 export default User;
