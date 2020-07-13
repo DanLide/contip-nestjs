@@ -1,5 +1,6 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import Profile from '../profile/profile.entity';
+import Rating from '../ratings/rating.entity';
 
 @Entity()
 class User {
@@ -19,7 +20,10 @@ class User {
     cascade: true,
   })
   @JoinColumn()
-  profile: Profile;
+  public profile: Profile;
+
+  @OneToMany(() => Rating, (rating: Rating) => rating.user)
+  public ratings: Rating[];
 }
 
 export default User;

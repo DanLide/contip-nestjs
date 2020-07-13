@@ -6,12 +6,12 @@ import Movie from '../movies/movie.entity';
 @Entity()
 class Profile {
   @PrimaryGeneratedColumn()
-  id: number;
+  public id: number;
 
   @OneToOne(() => User, (user: User) => user.profile, {
     onDelete: 'CASCADE',
   })
-  user: User;
+  public user: User;
 
   @ManyToMany(() => Category, {
     cascade: true,
@@ -19,7 +19,7 @@ class Profile {
     onUpdate: 'CASCADE',
   })
   @JoinTable()
-  preferences: Category[];
+  public preferences: Category[];
 
   @ManyToMany(() => Movie, {
     cascade: true,
@@ -27,7 +27,7 @@ class Profile {
     onUpdate: 'CASCADE',
   })
   @JoinTable()
-  watchlist: Movie[];
+  public watchlist: Movie[];
 }
 
 export default Profile;
