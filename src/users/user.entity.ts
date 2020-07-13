@@ -15,12 +15,6 @@ class User {
 
   @Column()
   public password: string;
-
-  @OneToOne(() => Profile, (profile: Profile) => profile.user, {
-    cascade: true,
-  })
-  @JoinColumn()
-  public profile: Profile;
 }
 
 export default User;

@@ -29,7 +29,7 @@ export class RatingsService {
 
   public async createMovieRatingByUserId(userId: number, ratingData: CreateRatingDto) {
     try {
-      const user = await this.usersService.getPlainUserById(userId);
+      const user = await this.usersService.getById(userId);
       const newRating = await this.ratingsRepository.create({
         ...ratingData,
         user,

@@ -6,8 +6,7 @@ import { ProfileService } from '../profile/profile.service';
 import { ProfileModule } from '../profile/profile.module';
 
 @Module({
-  // We use forwardRef() for avoiding circular dependency
-  imports: [TypeOrmModule.forFeature([User]), forwardRef(() => ProfileModule)],
+  imports: [TypeOrmModule.forFeature([User]), ProfileModule],
   providers: [UsersService],
   exports: [UsersService],
 })
