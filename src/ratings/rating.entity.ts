@@ -11,15 +11,15 @@ class Rating {
   @Column()
   public value: number;
 
-  @ManyToOne(() => User, (user: User) => user.ratings, {
-    cascade: true,
+  @ManyToOne(() => User, {
+    cascade: ['insert'],
     onDelete: 'CASCADE',
   })
   @JoinColumn()
   user: User;
 
   @ManyToOne(() => Movie, (movie: Movie) => movie.ratings, {
-    cascade: true,
+    cascade: ['insert'],
     onDelete: 'CASCADE',
   })
   @JoinColumn()

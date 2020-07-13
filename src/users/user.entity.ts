@@ -21,9 +21,6 @@ class User {
   })
   @JoinColumn()
   public profile: Profile;
-
-  @OneToMany(() => Rating, (rating: Rating) => rating.user)
-  public ratings: Rating[];
 }
 
 export default User;
